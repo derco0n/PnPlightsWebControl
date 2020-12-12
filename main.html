@@ -7,43 +7,95 @@
 
 <body>
 <H1>Pi 'n Paper - Light Control</H1>
-
-<p>Testpage</p>
-    <p id="players">
-        <canvas id="Player1" width="200" height="100" onclick="PlayerOnClick('Player1')" onmouseenter="PlayerOnHover('Player1')" onmouseleave="PlayerOnNoHover('Player1')">
+<H2>Spieler:</H2>
+<p id="players">
+    <div id="p1">
+        <p id="p1_name">
+            Name Spieler 1:
+            <input type="text" width="200" name="name_p1" id="name_p1" onchange="PlayerNameChanged(name_p1)"/>            
+        </p>
+        <canvas id="Player1" width="100" height="50" onclick="PlayerOnClick('Player1')" onmouseenter="PlayerOnHover('Player1')" onmouseleave="PlayerOnNoHover('Player1')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
-        </canvas>
-        <br />
-        <canvas id="Player2" width="200" height="100" onclick="PlayerOnClick('Player2')" onmouseenter="PlayerOnHover('Player2')" onmouseleave="PlayerOnNoHover('Player2')">
+        </canvas>        
+    </div>
+    <div id="p2">
+        <p id="p2_name">
+            Name Spieler 2:
+            <input type="text" width="200" name="name_p2" id="name_p2" />            
+        </p>
+        <canvas id="Player2" width="100" height="50" onclick="PlayerOnClick('Player2')" onmouseenter="PlayerOnHover('Player2')" onmouseleave="PlayerOnNoHover('Player2')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
-        </canvas>
-        <br />
-        <canvas id="Player3" width="200" height="100" onclick="PlayerOnClick('Player3')" onmouseenter="PlayerOnHover('Player3')" onmouseleave="PlayerOnNoHover('Player3')">
+        </canvas>        
+    </div>
+    <div id="p3">
+        <p id="p3_name">
+            Name Spieler 3:
+            <input type="text" width="200" name="name_p3" id="name_p3" />            
+        </p>
+        <canvas id="Player3" width="100" height="50" onclick="PlayerOnClick('Player3')" onmouseenter="PlayerOnHover('Player3')" onmouseleave="PlayerOnNoHover('Player3')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
-        </canvas>
-        <br />
-        <canvas id="Player4" width="200" height="100" onclick="PlayerOnClick('Player4')" onmouseenter="PlayerOnHover('Player4')" onmouseleave="PlayerOnNoHover('Player4')">
+        </canvas>        
+    </div>
+    <div id="p4">
+        <p id="p4_name">
+            Name Spieler 4:
+            <input type="text" width="200" name="name_p4" id="name_p4" />            
+        </p>
+        <canvas id="Player4" width="100" height="50" onclick="PlayerOnClick('Player4')" onmouseenter="PlayerOnHover('Player4')" onmouseleave="PlayerOnNoHover('Player4')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
-        </canvas>
-        <br />
-        <canvas id="Player5" width="200" height="100" onclick="PlayerOnClick('Player5')" onmouseenter="PlayerOnHover('Player5')" onmouseleave="PlayerOnNoHover('Player5')">
+        </canvas>        
+    </div>
+    <div id="p5">
+        <p id="p5_name">
+            Name Spieler 5:
+            <input type="text" width="200" name="name_p5" id="name_p5" />            
+        </p>
+        <canvas id="Player5" width="100" height="50" onclick="PlayerOnClick('Player5')" onmouseenter="PlayerOnHover('Player5')" onmouseleave="PlayerOnNoHover('Player5')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
-        </canvas>
-        <br />
-        <canvas id="Player6" width="200" height="100" onclick="PlayerOnClick('Player6')" onmouseenter="PlayerOnHover('Player6')" onmouseleave="PlayerOnNoHover('Player6')">
+        </canvas>        
+    </div>
+    <div id="p6">
+        <p id="p6_name">
+            Name Spieler 6:
+            <input type="text" width="200" name="name_p6" id="name_p6" />            
+        </p>
+        <canvas id="Player6" width="100" height="50" onclick="PlayerOnClick('Player6')" onmouseenter="PlayerOnHover('Player6')" onmouseleave="PlayerOnNoHover('Player6')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
-        </canvas>
-        <br />
-        <canvas id="Player7" width="200" height="100" onclick="PlayerOnClick('Player7')" onmouseenter="PlayerOnHover('Player7')" onmouseleave="PlayerOnNoHover('Player7')">
+        </canvas>        
+    </div>
+    <div id="p7">
+        <p id="p7_name">
+            Name Spieler 7:
+            <input type="text" width="200" name="name_p7" id="name_p7" />            
+        </p>
+        <canvas id="Player7" width="100" height="50" onclick="PlayerOnClick('Player7')" onmouseenter="PlayerOnHover('Player7')" onmouseleave="PlayerOnNoHover('Player7')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
-        </canvas>
-        <br />
-        <canvas id="Player8" width="200" height="100" onclick="PlayerOnClick('Player8')" onmouseenter="PlayerOnHover('Player8')" onmouseleave="PlayerOnNoHover('Player8')">
+        </canvas>        
+    </div>
+    <div id="p8">
+        <p id="p8_name">
+            Name Spieler 8:
+            <input type="text" width="200" name="name_p8" id="name_p8" />            
+        </p>
+        <canvas id="Player8" width="100" height="50" onclick="PlayerOnClick('Player8')" onmouseenter="PlayerOnHover('Player8')" onmouseleave="PlayerOnNoHover('Player8')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
-        </canvas>
-    </p>
+        </canvas>        
+    </div>
+</p>
 <script>
     //Javascript code below everything else, as the objects we might use here need to be declared before.
+
+ //Initial-Code
+    var player_uis = [];
+    player_uis.push({field: "Player1", name: "p1_name"});
+    player_uis.push({field: "Player2", name: "p2_name"});
+    player_uis.push({field: "Player3", name: "p3_name"});
+    player_uis.push({field: "Player4", name: "p4_name"});
+    player_uis.push({field: "Player5", name: "p5_name"});
+    player_uis.push({field: "Player6", name: "p6_name"});
+    player_uis.push({field: "Player7", name: "p7_name"});
+    player_uis.push({field: "Player8", name: "p8_name"});
+    
 
     //Functions
     function PlayerOnHover(id){ //Handles Canvas_mouse_enter
@@ -70,27 +122,62 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-
-    function PlayerOnClick(id){
-
+    function PlayerNameChanged(id){        
+        var p = document.getElementById(id.id);
+        //pname = p.value; //Get the input of the text field        
+        drawName("Player1", p.value);
     }
 
-    //Initial-Code
+    function drawName(myid, texttoprint){
+        //alert(myid);
+        //alert(texttoprint);        
+        var canvas = document.getElementById(myid);
+        var ctx = canvas.getContext("2d");
+        ctx.font = "30px Arial";
+        ctx.fillText("Hello World",10,50);
+    }
 
-    var player_canvasses = [
-        "Player1",
-        "Player2",
-        "Player3",
-        "Player4",
-        "Player5",
-        "Player6",
-        "Player7",
-        "Player8"
-        ];
+    function PlayerOnClick(id){
+        //Iterate all player UI elements
+        for (let i=0; i<player_uis.length; i++)
+        {           
+            if (id == player_uis[i].field){  //This must be the textbox that corresponds to our canvas                
+                toggleNameBox(player_uis[i].name);             
+            }            
+            else {                
+                hideNameBox(player_uis[i].name);
+            }
+        }
+    }
 
-    //Initialize all canvas in grey
-    for (let i=0; i<player_canvasses.length; i++){
-        canvas_paintgrey(player_canvasses[i]);
+    function toggleNameBox(id){
+        var p = document.getElementById(id);  
+        //alert(id);
+        if (p.hidden == true){            
+            showNameBox(id);          
+        }
+        else {
+            hideNameBox(id);
+        }        
+    }
+
+    function showNameBox(id){
+        var p = document.getElementById(id);        
+        p.hidden=false;
+        p.focus(); 
+    }
+
+    function hideNameBox(id){        
+        var p = document.getElementById(id);        
+        p.hidden=true;
+    }
+
+   
+
+    //Iterate all player elements
+    for (let i=0; i<player_uis.length; i++){           
+        canvas_paintgrey(player_uis[i].field); //Initialize all canvas in grey
+        hideNameBox(player_uis[i].name); //Initialize all textboxes as hidden
     }
 
 
