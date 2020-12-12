@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>PInPaper-LightControl</title>
+</head>
+
+<body>
+<H1>Pi and Paper - Light Control</H1>
+
+<p>Testpage</p>
+    <p id="players">
+        <canvas id="Player1" width="200" height="100" onclick="PlayerOnClick('Player1')" onmouseenter="PlayerOnHover('Player1')" onmouseleave="PlayerOnNoHover('Player1')">
+            Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
+        </canvas>
+        <br />
+        <canvas id="Player2" width="200" height="100" onclick="PlayerOnClick('Player2')" onmouseenter="PlayerOnHover('Player2')" onmouseleave="PlayerOnNoHover('Player2')">
+            Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
+        </canvas>
+        <br />
+        <canvas id="Player3" width="200" height="100" onclick="PlayerOnClick('Player3')" onmouseenter="PlayerOnHover('Player3')" onmouseleave="PlayerOnNoHover('Player3')">
+            Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
+        </canvas>
+        <br />
+        <canvas id="Player4" width="200" height="100" onclick="PlayerOnClick('Player4')" onmouseenter="PlayerOnHover('Player4')" onmouseleave="PlayerOnNoHover('Player4')">
+            Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
+        </canvas>
+        <br />
+        <canvas id="Player5" width="200" height="100" onclick="PlayerOnClick('Player5')" onmouseenter="PlayerOnHover('Player5')" onmouseleave="PlayerOnNoHover('Player5')">
+            Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
+        </canvas>
+        <br />
+        <canvas id="Player6" width="200" height="100" onclick="PlayerOnClick('Player6')" onmouseenter="PlayerOnHover('Player6')" onmouseleave="PlayerOnNoHover('Player6')">
+            Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
+        </canvas>
+        <br />
+        <canvas id="Player7" width="200" height="100" onclick="PlayerOnClick('Player7')" onmouseenter="PlayerOnHover('Player7')" onmouseleave="PlayerOnNoHover('Player7')">
+            Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
+        </canvas>
+        <br />
+        <canvas id="Player8" width="200" height="100" onclick="PlayerOnClick('Player8')" onmouseenter="PlayerOnHover('Player8')" onmouseleave="PlayerOnNoHover('Player8')">
+            Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
+        </canvas>
+    </p>
+<script>
+    //Javascript code below everything else, as the objects we might use here need to be declared before.
+
+    //Functions
+    function PlayerOnHover(id){ //Handles Canvas_mouse_enter
+        //alert("Hovered "+ id);
+        canvas_paintyellow(id);
+    }
+
+    function PlayerOnNoHover(id){ //Handles Canvas_mouse_leave
+        //alert("Hovered "+ id);
+        canvas_paintgrey(id);
+    }
+
+    function canvas_paintyellow(id){
+        var canvas = document.getElementById(id);
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function canvas_paintgrey(id){
+        var canvas = document.getElementById(id);
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = "grey";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+
+    function PlayerOnClick(id){
+
+    }
+
+    //Initial-Code
+
+    var player_canvasses = [
+        "Player1",
+        "Player2",
+        "Player3",
+        "Player4",
+        "Player5",
+        "Player6",
+        "Player7",
+        "Player8"
+        ];
+
+    //Initialize all canvas in grey
+    for (let i=0; i<player_canvasses.length; i++){
+        canvas_paintgrey(player_canvasses[i]);
+    }
+
+
+
+
+
+</script>
+</body>
+</html>
