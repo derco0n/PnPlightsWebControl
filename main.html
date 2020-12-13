@@ -2,16 +2,18 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>PInPaper-LightControl</title>
+    <title>Pi 'n Paper-LightControl (by derco0n)</title>
 </head>
 
 <body>
-<H1>Pi 'n Paper - Light Control</H1>
+<H1>Pi 'n Paper - Light Control v0.1</H1>
+by <a href="https://github.com/derco0n">derco0n</a>
+
 <H2>Spieler:</H2>
 <p id="players">
     <div id="p1">
         <p id="p1_name">
-            Name Spieler 1:
+            Spieler 1:
             <input type="text" width="200" name="name_p1" id="name_p1" onchange="PlayerNameChanged(name_p1)"/>            
         </p>
         <canvas id="Player1" width="100" height="50" onclick="PlayerOnClick('Player1')" onmouseenter="PlayerOnHover('Player1')" onmouseleave="PlayerOnNoHover('Player1')">
@@ -20,7 +22,7 @@
     </div>
     <div id="p2">
         <p id="p2_name">
-            Name Spieler 2:
+            Spieler 2:
             <input type="text" width="200" name="name_p2" id="name_p2" onchange="PlayerNameChanged(name_p2)"/>            
         </p>
         <canvas id="Player2" width="100" height="50" onclick="PlayerOnClick('Player2')" onmouseenter="PlayerOnHover('Player2')" onmouseleave="PlayerOnNoHover('Player2')">
@@ -29,7 +31,7 @@
     </div>
     <div id="p3">
         <p id="p3_name">
-            Name Spieler 3:
+            Spieler 3:
             <input type="text" width="200" name="name_p3" id="name_p3" onchange="PlayerNameChanged(name_p3)"/>            
         </p>
         <canvas id="Player3" width="100" height="50" onclick="PlayerOnClick('Player3')" onmouseenter="PlayerOnHover('Player3')" onmouseleave="PlayerOnNoHover('Player3')">
@@ -38,7 +40,7 @@
     </div>
     <div id="p4">
         <p id="p4_name">
-            Name Spieler 4:
+            Spieler 4:
             <input type="text" width="200" name="name_p4" id="name_p4" onchange="PlayerNameChanged(name_p4)"/>            
         </p>
         <canvas id="Player4" width="100" height="50" onclick="PlayerOnClick('Player4')" onmouseenter="PlayerOnHover('Player4')" onmouseleave="PlayerOnNoHover('Player4')">
@@ -47,7 +49,7 @@
     </div>
     <div id="p5">
         <p id="p5_name">
-            Name Spieler 5:
+            Spieler 5:
             <input type="text" width="200" name="name_p5" id="name_p5" onchange="PlayerNameChanged(name_p5)"/>            
         </p>
         <canvas id="Player5" width="100" height="50" onclick="PlayerOnClick('Player5')" onmouseenter="PlayerOnHover('Player5')" onmouseleave="PlayerOnNoHover('Player5')">
@@ -56,7 +58,7 @@
     </div>
     <div id="p6">
         <p id="p6_name">
-            Name Spieler 6:
+            Spieler 6:
             <input type="text" width="200" name="name_p6" id="name_p6" onchange="PlayerNameChanged(name_p6)"/>            
         </p>
         <canvas id="Player6" width="100" height="50" onclick="PlayerOnClick('Player6')" onmouseenter="PlayerOnHover('Player6')" onmouseleave="PlayerOnNoHover('Player6')">
@@ -65,7 +67,7 @@
     </div>
     <div id="p7">
         <p id="p7_name">
-            Name Spieler 7:
+            Spieler 7:
             <input type="text" width="200" name="name_p7" id="name_p7" onchange="PlayerNameChanged(name_p7)"/>            
         </p>
         <canvas id="Player7" width="100" height="50" onclick="PlayerOnClick('Player7')" onmouseenter="PlayerOnHover('Player7')" onmouseleave="PlayerOnNoHover('Player7')">
@@ -74,13 +76,17 @@
     </div>
     <div id="p8">
         <p id="p8_name">
-            Name Spieler 8:
+            Spieler 8:
             <input type="text" width="200" name="name_p8" id="name_p8" onchange="PlayerNameChanged(name_p8)"/>            
         </p>
         <canvas id="Player8" width="100" height="50" onclick="PlayerOnClick('Player8')" onmouseenter="PlayerOnHover('Player8')" onmouseleave="PlayerOnNoHover('Player8')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
         </canvas>        
     </div>
+</p>
+
+<p>
+    <a href="https://github.com/derco0n/PnPlightsWebControl">Sourcecode</a>
 </p>
 <script>
     //Javascript code below everything else, as the objects we might use here need to be declared before.
@@ -100,11 +106,13 @@
     // Start: Functions
     function PlayerOnHover(id){ //Handles Canvas_mouse_enter
         //alert("Hovered "+ id);
-        canvas_paintyellow(id);
+        enlightenPlayer(id);
+        canvas_paintyellow(id);        
     }
 
     function PlayerOnNoHover(id){ //Handles Canvas_mouse_leave
         //alert("Hovered "+ id);
+        darkenPlayer(id);
         canvas_paintgrey(id);
     }
 
@@ -195,14 +203,32 @@
     function savePlayername(id, name){
         //Will set the playername on backend-side
         var uri = encodeURI("http://127.0.0.1:8080/engine?job=setplayer&id="+id+"&name="+name);  //Todo: Need to figure out why this does ten requests at once...
-        
-        fetch(uri)
+        makeGetRequest(uri);        
+    }
+
+    function makeGetRequest(encodedURI){
+        //Will make a GET-Request to the backend
+        fetch(encodedURI)
         .then(response => {
             if (!response.ok) {
-            throw new Error('Spielername konnte nicht übernommen werden!'); //This should not happen
+            throw new Error('Fehler bei der Kommunikation mit dem Backend!'); //This should not happen
             }
         });
     }
+
+    function enlightenPlayer(id){
+        //Will tell the backend to turn on player's-light
+        var uri = encodeURI("http://127.0.0.1:8080/engine?job=enlightplayer&id="+id+"&onoff=light");  //Todo: Need to figure out why this does ten requests at once...
+        //alert(uri);
+        makeGetRequest(uri);
+    }
+
+    function darkenPlayer(id){
+        //Will tell the backend to turn on player's-light
+        var uri = encodeURI("http://127.0.0.1:8080/engine?job=enlightplayer&id="+id+"&onoff=darkness");  //Todo: Need to figure out why this does ten requests at once...
+        makeGetRequest(uri);
+    }
+
     // End: Functions
 
     //Iterate all player elements
