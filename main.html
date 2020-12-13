@@ -21,7 +21,7 @@
     <div id="p2">
         <p id="p2_name">
             Name Spieler 2:
-            <input type="text" width="200" name="name_p2" id="name_p2" />            
+            <input type="text" width="200" name="name_p2" id="name_p2" onchange="PlayerNameChanged(name_p2)"/>            
         </p>
         <canvas id="Player2" width="100" height="50" onclick="PlayerOnClick('Player2')" onmouseenter="PlayerOnHover('Player2')" onmouseleave="PlayerOnNoHover('Player2')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
@@ -30,7 +30,7 @@
     <div id="p3">
         <p id="p3_name">
             Name Spieler 3:
-            <input type="text" width="200" name="name_p3" id="name_p3" />            
+            <input type="text" width="200" name="name_p3" id="name_p3" onchange="PlayerNameChanged(name_p3)"/>            
         </p>
         <canvas id="Player3" width="100" height="50" onclick="PlayerOnClick('Player3')" onmouseenter="PlayerOnHover('Player3')" onmouseleave="PlayerOnNoHover('Player3')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
@@ -39,7 +39,7 @@
     <div id="p4">
         <p id="p4_name">
             Name Spieler 4:
-            <input type="text" width="200" name="name_p4" id="name_p4" />            
+            <input type="text" width="200" name="name_p4" id="name_p4" onchange="PlayerNameChanged(name_p4)"/>            
         </p>
         <canvas id="Player4" width="100" height="50" onclick="PlayerOnClick('Player4')" onmouseenter="PlayerOnHover('Player4')" onmouseleave="PlayerOnNoHover('Player4')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
@@ -48,7 +48,7 @@
     <div id="p5">
         <p id="p5_name">
             Name Spieler 5:
-            <input type="text" width="200" name="name_p5" id="name_p5" />            
+            <input type="text" width="200" name="name_p5" id="name_p5" onchange="PlayerNameChanged(name_p5)"/>            
         </p>
         <canvas id="Player5" width="100" height="50" onclick="PlayerOnClick('Player5')" onmouseenter="PlayerOnHover('Player5')" onmouseleave="PlayerOnNoHover('Player5')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
@@ -57,7 +57,7 @@
     <div id="p6">
         <p id="p6_name">
             Name Spieler 6:
-            <input type="text" width="200" name="name_p6" id="name_p6" />            
+            <input type="text" width="200" name="name_p6" id="name_p6" onchange="PlayerNameChanged(name_p6)"/>            
         </p>
         <canvas id="Player6" width="100" height="50" onclick="PlayerOnClick('Player6')" onmouseenter="PlayerOnHover('Player6')" onmouseleave="PlayerOnNoHover('Player6')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
@@ -66,7 +66,7 @@
     <div id="p7">
         <p id="p7_name">
             Name Spieler 7:
-            <input type="text" width="200" name="name_p7" id="name_p7" />            
+            <input type="text" width="200" name="name_p7" id="name_p7" onchange="PlayerNameChanged(name_p7)"/>            
         </p>
         <canvas id="Player7" width="100" height="50" onclick="PlayerOnClick('Player7')" onmouseenter="PlayerOnHover('Player7')" onmouseleave="PlayerOnNoHover('Player7')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
@@ -75,7 +75,7 @@
     <div id="p8">
         <p id="p8_name">
             Name Spieler 8:
-            <input type="text" width="200" name="name_p8" id="name_p8" />            
+            <input type="text" width="200" name="name_p8" id="name_p8" onchange="PlayerNameChanged(name_p8)"/>            
         </p>
         <canvas id="Player8" width="100" height="50" onclick="PlayerOnClick('Player8')" onmouseenter="PlayerOnHover('Player8')" onmouseleave="PlayerOnNoHover('Player8')">
             Der verwendete Browser unterstützt nicht alle Funktionen. Bitte verwenden Sie einen modernen Browser.
@@ -85,19 +85,19 @@
 <script>
     //Javascript code below everything else, as the objects we might use here need to be declared before.
 
- //Initial-Code
+ 
     var player_uis = [];
-    player_uis.push({field: "Player1", name: "p1_name"});
-    player_uis.push({field: "Player2", name: "p2_name"});
-    player_uis.push({field: "Player3", name: "p3_name"});
-    player_uis.push({field: "Player4", name: "p4_name"});
-    player_uis.push({field: "Player5", name: "p5_name"});
-    player_uis.push({field: "Player6", name: "p6_name"});
-    player_uis.push({field: "Player7", name: "p7_name"});
-    player_uis.push({field: "Player8", name: "p8_name"});
+    player_uis.push({field: "Player1", name: "p1_name", textbox: "name_p1"});
+    player_uis.push({field: "Player2", name: "p2_name", textbox: "name_p2"});
+    player_uis.push({field: "Player3", name: "p3_name", textbox: "name_p3"});
+    player_uis.push({field: "Player4", name: "p4_name", textbox: "name_p4"});
+    player_uis.push({field: "Player5", name: "p5_name", textbox: "name_p5"});
+    player_uis.push({field: "Player6", name: "p6_name", textbox: "name_p6"});
+    player_uis.push({field: "Player7", name: "p7_name", textbox: "name_p7"});
+    player_uis.push({field: "Player8", name: "p8_name", textbox: "name_p8"});
     
 
-    //Functions
+    // Start: Functions
     function PlayerOnHover(id){ //Handles Canvas_mouse_enter
         //alert("Hovered "+ id);
         canvas_paintyellow(id);
@@ -124,8 +124,28 @@
 
     function PlayerNameChanged(id){        
         var p = document.getElementById(id.id);
-        //pname = p.value; //Get the input of the text field        
-        drawName("Player1", p.value);
+        
+        // Get the Player of the current Text-Box
+        var Player = getPlayerByTextBox(id.id);
+        //alert(Player);
+        //drawName(Player, p.value);
+        savePlayername(Player, p.value);
+    }
+
+    function getPlayerByTextBox(boxname){
+        // Will get the PlayerID by a given Textbox
+        var myreturn = "Not found!";
+
+        for (let i=0; i<player_uis.length; i++)
+        {   
+            //alert(boxname + " => " + player_uis[i].textbox + " | " + player_uis[i].field); //DEBUG
+            if (boxname == player_uis[i].textbox){  //This must be the textbox that corresponds to our canvas  
+                myreturn = player_uis[i].field;             
+                break;
+            }        
+        }        
+        //alert("! " + myreturn); //DEBUG
+        return myreturn;
     }
 
     function drawName(myid, texttoprint){
@@ -134,7 +154,7 @@
         var canvas = document.getElementById(myid);
         var ctx = canvas.getContext("2d");
         ctx.font = "30px Arial";
-        ctx.fillText("Hello World",10,50);
+        ctx.fillText(texttoprint, 10, 50);
     }
 
     function PlayerOnClick(id){
@@ -172,17 +192,24 @@
         p.hidden=true;
     }
 
-   
+    function savePlayername(id, name){
+        //Will set the playername on backend-side
+        var uri = encodeURI("http://127.0.0.1:8080/engine?job=setplayer&id="+id+"&name="+name);  //Todo: Need to figure out why this does ten requests at once...
+        
+        fetch(uri)
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Spielername konnte nicht übernommen werden!'); //This should not happen
+            }
+        });
+    }
+    // End: Functions
 
     //Iterate all player elements
     for (let i=0; i<player_uis.length; i++){           
         canvas_paintgrey(player_uis[i].field); //Initialize all canvas in grey
         hideNameBox(player_uis[i].name); //Initialize all textboxes as hidden
     }
-
-
-
-
 
 </script>
 </body>
