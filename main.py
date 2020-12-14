@@ -51,17 +51,17 @@ class proglogic():
         
         if currentstate is not None:
             # A previous player state exists
-            print("Light-State-Transition: " + str(currentstate) + " => " + str(on))  # DEBUG
+            print("Light-State-Transition for player \"" + str(id) + "\": " + str(currentstate) + " => " + str(on))  # DEBUG
             if currentstate != on:
                 # New state is different than the previous state. We should do something                      
+                # Todo: Add code to turn relay's on/off here below. We need to import the libraries for the relay-board
                 if on:
                     # print("Will enlight player " + str(id))  # DEBUG
                     pass
                 else:
                     # print("Will drop player " + str(id) + " in eternal darkness.")  # DEBUG
+                    time.sleep(0.1)  # Give the relay time to change it's state (only on one-way-transistion)
                     pass
-                # Todo: Add code to turn relay's on/off here. We need to import the libraries for the relay-board
-                time.sleep(0.05)  # Give the relay time to change it's state
             else:
                 # print("Previous state matches new state. Will not change anything.")  # DEBUG
                 pass

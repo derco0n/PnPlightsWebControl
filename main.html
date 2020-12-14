@@ -82,7 +82,7 @@
 </head>
 
 <body>
-<H1>Pi 'n Paper - Light Control v0.12 (by <a href="https://github.com/derco0n">derco0n</a>)</H1>
+<H1>Pi 'n Paper - Light Control v0.13 (by <a href="https://github.com/derco0n">derco0n</a>)</H1>
 
 <H2>Spieler:</H2>
 <div id="players">
@@ -227,8 +227,19 @@
     player_points.push({id: "p7", pnum: 7, points: 0});
     player_points.push({id: "p8", pnum: 8, points: 0});
     
+    setCurrentPlayer(0);
+    
+    var textbox_org_background=document.getElementById("name_p1").style.background;  //Save the original color of the Textboxes
+    var button_org_background=document.getElementById("btn_prevplayer").style.background;  //Save the original color of the Buttons
+    
 
     // Start: Functions
+    function setCurrentPlayer(num){
+        // Set the current player... the one who's turn is now
+        current_playerindex=num; //Save the current playerindex
+        current_playernumber=player_points[current_playerindex].pnum;  //Save the current playernumber
+    }
+
     function switchmode(inround){
         document.getElementById("btns_inround").hidden=!inround;  // Show in round buttons only if we're actually in a round
         //Make sure, that no points can be entered during a round
@@ -312,6 +323,7 @@
         //darkenPlayer(id);  //Test       
     }
 
+
     function Handle_btn_click(id){
         //Will handle ClickEvents from the buttons
         //alert(id); //DEBUG
@@ -321,27 +333,104 @@
                 
                 //Update points values...
                 getAllPoints();
-                //Calculate players ranks based on their points
-                calcPlayerRanks(); 
+                //Calculate players ranks based on their points and write them back to player_points
+                player_points = calcPlayerRanks();
+                
+                setCurrentPlayer(0); //Set the current playernumber to the first player (the one with the most points)
+
+                id=getPlayerIDByPnum(current_playernumber)
+                enlightenPlayer(id); //Turn on players light
                 //Start a new round as we're actually not within one
                 switchmode(true);
+
             }
             else {
                 //Stop the current round
                 switchmode(false);
+                ThrowAllPlayerInEternalDarkness(); //Turn all players dark
             }
         }
         else if (id=="btn_prevplayer"){
             //Go back to the previous Player... (just in case the dungeonmaster accidentially clicked next, as he skilled "gross motor skills" to maximum )
+            pid=getPlayerIDByPnum(current_playernumber);            
+            if (current_playerindex > 0){
+                darkenPlayer(pid);  //Darken the current player
+
+                //Fetch the new player
+                setCurrentPlayer(current_playerindex-1);                
+                pid=getPlayerIDByPnum(current_playernumber);
+                enlightenPlayer(pid); //Enlighten it                               
+            }
+            else {
+                alert("Erster Spieler! : " + pid); //DEBUG
+            }
+
+            //Some-Button-Magic
+            if (current_playerindex==0) { 
+                //We're now at the first index and should disable the button                
+                document.getElementById("btn_prevplayer").disabled=true;
+                document.getElementById("btn_prevplayer").style.background="grey";
+            }    
+            
+            if (current_playerindex < player_points.length-1) {
+                document.getElementById("btn_nextplayer").disabled=false; //Enable the next-button
+                document.getElementById("btn_nextplayer").style.background=button_org_background;
+            }
 
         }
         else if (id=="btn_noplayer"){
             // Disable all players. Can be used for example in case of an NPC-event
+            ThrowAllPlayerInEternalDarkness(); //Turn all players dark          
 
         }
         else if (id=="btn_nextplayer"){
-            //Iterate to the next Player...
+            //Iterate to the next Player...            
+            pid=getPlayerIDByPnum(current_playernumber);
+            //alert(current_playernumber + " => " + pid); //DEBUG
+            if (current_playerindex < player_points.length-1) {
+                darkenPlayer(pid);  //Darken the current player
 
+                //Fetch the new player
+                setCurrentPlayer(current_playerindex+1);
+                pid=getPlayerIDByPnum(current_playernumber);
+                enlightenPlayer(pid); //Enlighten it
+            }
+            else {
+                alert("Letzter Spieler! : " + pid); //DEBUG
+            }
+
+            if (current_playerindex > 0) {                
+                document.getElementById("btn_prevplayer").disabled=false; //Enable the prev-button
+                document.getElementById("btn_prevplayer").style.background=button_org_background;
+            }
+
+            if (current_playerindex >= player_points.length-1) {
+                document.getElementById("btn_nextplayer").disabled=true; //Disable the next-button
+                document.getElementById("btn_nextplayer").style.background="grey";
+            }
+
+        }
+    }
+
+    function getPlayerIDByPnum(pnum)
+    { //Get's a player's ID by loking up with pnum
+        var myreturn = "not found!";
+        try {
+            for (let i=0; i<player_points.length; i++)
+                { 
+                    //alert(player_points[i].pnum + " => " + pnum); //DEBUG
+                    if (player_points[i].pnum == pnum){
+                        myreturn=player_points[i].id;
+                        break;
+                    }                    
+                }
+        }
+        catch (e){
+            alert(e);
+        }
+        finally{
+            //alert(myreturn); //DEBUG
+            return myreturn;
         }
     }
 
@@ -390,6 +479,21 @@
         return myreturn;
     }
 
+    function getPlayerNameTextBoxByID(id)
+    { // Will get the Player's Name-Textbox by a given ID
+        var myreturn = "Not found!";
+        for (let i=0; i<player_uis.length; i++)
+        {               
+            if (id == player_uis[i].id)
+            {  
+                myreturn = player_uis[i].textbox_name;             
+                break;
+            }        
+        }        
+        // alert("! " + myreturn); //DEBUG
+        return myreturn;
+    }
+
     function getPlayerIDByPointsTextBox(boxname)
     { // Will get the Player's ID by a given Points-Textbox        
         var myreturn = "Not found!";
@@ -398,6 +502,21 @@
             if (boxname == player_uis[i].textbox_points)
             {  
                 myreturn = player_uis[i].id;             
+                break;
+            }        
+        }        
+        // alert("! " + myreturn); //DEBUG
+        return myreturn;
+    }
+
+    function getPlayerPointsTextBoxByID(id)
+    { // Will get the Player's Point-Textbox by a given ID
+        var myreturn = "Not found!";
+        for (let i=0; i<player_uis.length; i++)
+        {               
+            if (id == player_uis[i].id)
+            {  
+                myreturn = player_uis[i].textbox_points;             
                 break;
             }        
         }        
@@ -426,16 +545,44 @@
     }
 
     function enlightenPlayer(id){
-        //Will tell the backend to turn on player's-light
+        //Will tell the backend to turn on player's-light and also highlight the player in UI
         var uri = encodeURI("http://127.0.0.1:8080/engine?job=enlightplayer&id="+id+"&onoff=light");  //Todo: Need to figure out why this does ten requests at once...
         //alert(uri);
         makeGetRequest(uri);
+
+        
+        //Highlight the player in UI
+        namebox=document.getElementById(getPlayerNameTextBoxByID(id));
+        pointsbox=document.getElementById(getPlayerPointsTextBoxByID(id));
+        namebox.style.background="green";
+        pointsbox.style.background="green";        
     }
 
     function darkenPlayer(id){
-        //Will tell the backend to turn on player's-light
+        //Will tell the backend to turn on player's-light and also highlight the player in UI
         var uri = encodeURI("http://127.0.0.1:8080/engine?job=enlightplayer&id="+id+"&onoff=darkness");  //Todo: Need to figure out why this does ten requests at once...
         makeGetRequest(uri);
+
+        //Darken the player in UI
+        //alert(id); //DEBUG
+        namebox= document.getElementById(getPlayerNameTextBoxByID(id));
+        pointsbox= document.getElementById(getPlayerPointsTextBoxByID(id));                
+        namebox.style.background=textbox_org_background;
+        pointsbox.style.background=textbox_org_background;        
+    }
+
+    function ThrowAllPlayerInEternalDarkness(){
+        //Will turn off all player lights and also disable the LED's for that player
+        try {
+            for (let i=0; i<player_uis.length; i++)  //iterate through all players
+                { 
+                    // alert(player_uis[i].id); //DEBUG
+                    darkenPlayer(player_uis[i].id);  //Darken the current player                    
+                }
+        }
+        catch (e){
+            alert(e);
+        }
     }
 
     // End: Functions
