@@ -53,11 +53,36 @@
         .smalllink {
             font-size: small; 
         }
+
+        .button {
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .button1 {
+            background-color: rgb(41, 0, 0); 
+            color: rgb(204, 0, 0); 
+            border: 2px solid #740000;
+        }
+
+        .button1:hover {
+            background-color: #9c0000;
+            border: 2px solid #ff0000;
+            color: white;
+        }
     </style>
 </head>
 
 <body>
-<H1>Pi 'n Paper - Light Control v0.11 (by <a href="https://github.com/derco0n">derco0n</a>)</H1>
+<H1>Pi 'n Paper - Light Control v0.12 (by <a href="https://github.com/derco0n">derco0n</a>)</H1>
 
 <H2>Spieler:</H2>
 <div id="players">
@@ -70,7 +95,7 @@
             onchange="PlayerNameChanged(name_p1)" onmouseenter="PlayerOnHover('p1')" onmouseleave="PlayerOnNoHover('p1')" />            
         </div>
         <div id="p1_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p1" id="points_p1" onchange="PlayerPointsChanged(points_p1)"/>
+            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p1" id="points_p1" onchange="PlayerPointsChanged('points_p1')"/>
         </div>
     </div>
     <div id="p2" class="block">
@@ -82,7 +107,7 @@
             onchange="PlayerNameChanged(name_p2)" onmouseenter="PlayerOnHover('p2')" onmouseleave="PlayerOnNoHover('p2')" />            
         </div>
         <div id="p2_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p2" id="points_p2" onchange="PlayerPointsChanged(points_p2)"/>
+            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p2" id="points_p2" onchange="PlayerPointsChanged('points_p2')"/>
         </div>
     </div>
     <div id="p3" class="block">
@@ -94,7 +119,7 @@
             onchange="PlayerNameChanged(name_p3)" onmouseenter="PlayerOnHover('p3')" onmouseleave="PlayerOnNoHover('p3')" />            
         </div>
         <div id="p3_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p3" id="points_p3" onchange="PlayerPointsChanged(points_p3)"/>
+            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p3" id="points_p3" onchange="PlayerPointsChanged('points_p3')"/>
         </div>
     </div>
     <div id="p4" class="block">
@@ -106,7 +131,7 @@
             onchange="PlayerNameChanged(name_p4)" onmouseenter="PlayerOnHover('p4')" onmouseleave="PlayerOnNoHover('p4')" />            
         </div>
         <div id="p4_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p4" id="points_p4" onchange="PlayerPointsChanged(points_p4)"/>
+            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p4" id="points_p4" onchange="PlayerPointsChanged('points_p4')"/>
         </div>
     </div>
     <div id="p5" class="block">
@@ -118,7 +143,7 @@
             onchange="PlayerNameChanged(name_p5)" onmouseenter="PlayerOnHover('p5')" onmouseleave="PlayerOnNoHover('p5')" />            
         </div>
         <div id="p5_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p5" id="points_p5" onchange="PlayerPointsChanged(points_p5)"/>
+            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p5" id="points_p5" onchange="PlayerPointsChanged('points_p5')"/>
         </div>
     </div>
     <div id="p6" class="block">
@@ -130,7 +155,7 @@
             onchange="PlayerNameChanged(name_p6)" onmouseenter="PlayerOnHover('p6')" onmouseleave="PlayerOnNoHover('p6')" />            
         </div>
         <div id="p6_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p6" id="points_p6" onchange="PlayerPointsChanged(points_p6)"/>
+            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p6" id="points_p6" onchange="PlayerPointsChanged('points_p6')"/>
         </div>
     </div>
     <div id="p7" class="block">
@@ -142,7 +167,7 @@
             onchange="PlayerNameChanged(name_p7)" onmouseenter="PlayerOnHover('p7')" onmouseleave="PlayerOnNoHover('p7')" />            
         </div>
         <div id="p7_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p7" id="points_p7" onchange="PlayerPointsChanged(points_p7)"/>
+            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p7" id="points_p7" onchange="PlayerPointsChanged('points_p7')"/>
         </div>
     </div>
     <div id="p8" class="block">
@@ -154,16 +179,33 @@
             onchange="PlayerNameChanged(name_p8)" onmouseenter="PlayerOnHover('p8')" onmouseleave="PlayerOnNoHover('p8')" />            
         </div>
         <div id="p8_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p8" id="points_p8" onchange="PlayerPointsChanged(points_p8)"/>
+            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p8" id="points_p8" onchange="PlayerPointsChanged('points_p8')"/>
         </div>
     </div>
 </div>
-
+<p>
+    <div id="controls">
+        <div id="buttons" class="block">
+            <div id="btns_startstop">
+                <button type="button" class="button1" id="btn_startstop" onclick="Handle_btn_click('btn_startstop')">Runden...</button>
+            </div>
+            <div id="btns_inround">
+                <button type="button" class="button1" id="btn_prevplayer" onclick="Handle_btn_click('btn_prevplayer')">Vorh. Spieler</button>
+                <button type="button" class="button1" id="btn_noplayer" onclick="Handle_btn_click('btn_noplayer')">Kein Spieler</button>
+                <button type="button" class="button1" id="btn_nextplayer" onclick="Handle_btn_click('btn_nextplayer')">N&auml;chs. Spieler</button>
+            </div>
+        </div>
+    </div>
+</p>
 <p>
     <a class="smalllink" href="https://github.com/derco0n/PnPlightsWebControl">Sourcecode</a>
 </p>
 <script>
     //Javascript code below everything else, as the objects we might use here need to be declared before. 
+    
+    switchmode(false);
+
+
     var player_uis = [];
     player_uis.push({id: "p1", rank: "p1_rank", name: "p1_name", textbox_name: "name_p1", textbox_points: "points_p1"});
     player_uis.push({id: "p2", rank: "p2_rank", name: "p2_name", textbox_name: "name_p2", textbox_points: "points_p2"});
@@ -173,40 +215,169 @@
     player_uis.push({id: "p6", rank: "p6_rank", name: "p6_name", textbox_name: "name_p6", textbox_points: "points_p6"});
     player_uis.push({id: "p7", rank: "p7_rank", name: "p7_name", textbox_name: "name_p7", textbox_points: "points_p7"});
     player_uis.push({id: "p8", rank: "p8_rank", name: "p8_name", textbox_name: "name_p8", textbox_points: "points_p8"});  
+
+    var player_points = [];
+    //ID, playernumber, current-points
+    player_points.push({id: "p1", pnum: 1, points: 0});
+    player_points.push({id: "p2", pnum: 2, points: 0});
+    player_points.push({id: "p3", pnum: 3, points: 0});
+    player_points.push({id: "p4", pnum: 4, points: 0});
+    player_points.push({id: "p5", pnum: 5, points: 0});
+    player_points.push({id: "p6", pnum: 6, points: 0});
+    player_points.push({id: "p7", pnum: 7, points: 0});
+    player_points.push({id: "p8", pnum: 8, points: 0});
     
 
     // Start: Functions
+    function switchmode(inround){
+        document.getElementById("btns_inround").hidden=!inround;  // Show in round buttons only if we're actually in a round
+        //Make sure, that no points can be entered during a round
+        document.getElementById("points_p1").disabled=inround;
+        document.getElementById("points_p2").disabled=inround;
+        document.getElementById("points_p3").disabled=inround;
+        document.getElementById("points_p4").disabled=inround;
+        document.getElementById("points_p5").disabled=inround;
+        document.getElementById("points_p6").disabled=inround;
+        document.getElementById("points_p7").disabled=inround;
+        document.getElementById("points_p8").disabled=inround;
+
+        //Make sure, that no names can be changed during a round
+        document.getElementById("name_p1").disabled=inround;
+        document.getElementById("name_p2").disabled=inround;
+        document.getElementById("name_p3").disabled=inround;
+        document.getElementById("name_p4").disabled=inround;
+        document.getElementById("name_p5").disabled=inround;
+        document.getElementById("name_p6").disabled=inround;
+        document.getElementById("name_p7").disabled=inround;
+        document.getElementById("name_p8").disabled=inround;
+        
+
+        if (inround){
+            document.getElementById("btn_startstop").innerHTML="Rundenstopp";
+        }        
+        else {
+            document.getElementById("btn_startstop").innerHTML="Rundenstart";
+        }
+    }
+
+
+    function updatePlayerpoints(id, points){
+        // Will update the internally saved points of a player
+        for (let i=0; i<player_points.length; i++)
+        { 
+            if (player_points[i].id == id){
+                player_points[i].points = points;
+                break;
+            }
+            //alert(player_points[i].id + " => " + player_points[i].points);
+        }        
+    }
+
+    function calcPlayerRanks(){
+        //Will calculate the players ordering based on their points        
+        var key_vals = player_points; //Make a copy of player points        
+        //alert("Calc ");  
+        key_vals.sort(function compare(kv1, kv2) {
+            // This comparison function has 3 return cases:
+            // - Negative number: kv1 should be placed AFTER kv2
+            // - Positive number: kv1 should be placed BEFORE kv2
+            // - Zero: they are equal, order based on pnum            
+            rank = kv2["points"] - kv1["points"];
+            if (rank == 0){
+                //Both players have equal points, make a decission based on the players number in ascending order
+                rank = kv1["pnum"] - kv2["pnum"];                
+            }
+            return rank;
+        });
+
+        /*
+        //DEBUG
+        var result="Sorted:\r\n";
+        for (let i=0; i<key_vals.length; i++)
+        {   
+            result = result + key_vals[i].id + ": Points=" + key_vals[i].points + " Pnum="+key_vals[i].pnum+"\r\n" ;
+        }
+        alert(result);
+        */
+        return key_vals;
+    }
+
     function PlayerOnHover(id){ 
         //alert("Hovered "+ id);
-        enlightenPlayer(id); //Test
+        //enlightenPlayer(id); //Test
     }
 
     function PlayerOnNoHover(id){ 
         //alert("Hovered "+ id);
-        darkenPlayer(id);  //Test       
+        //darkenPlayer(id);  //Test       
+    }
+
+    function Handle_btn_click(id){
+        //Will handle ClickEvents from the buttons
+        //alert(id); //DEBUG
+        if (id=="btn_startstop"){
+            // Start/Stop of a round requested...
+            if (document.getElementById("btn_startstop").innerHTML=="Rundenstart"){
+                
+                //Update points values...
+                getAllPoints();
+                //Calculate players ranks based on their points
+                calcPlayerRanks(); 
+                //Start a new round as we're actually not within one
+                switchmode(true);
+            }
+            else {
+                //Stop the current round
+                switchmode(false);
+            }
+        }
+        else if (id=="btn_prevplayer"){
+            //Go back to the previous Player... (just in case the dungeonmaster accidentially clicked next, as he skilled "gross motor skills" to maximum )
+
+        }
+        else if (id=="btn_noplayer"){
+            // Disable all players. Can be used for example in case of an NPC-event
+
+        }
+        else if (id=="btn_nextplayer"){
+            //Iterate to the next Player...
+
+        }
+    }
+
+    function getAllPoints()
+    { //Updates all player points by fething the values from the textboxes
+        try {
+            for (let i=0; i<player_uis.length; i++)
+                { 
+                    PlayerPointsChanged(player_uis[i].textbox_points);
+                    //alert(i + " => " + player_uis[i].textbox_points); //DEBUG
+                }
+        }
+        catch (e){
+            alert(e);
+        }
     }
 
     function PlayerNameChanged(id){        
         var p = document.getElementById(id.id);        
         // Get the Player of the current Text-Box
-        var Player = getPlayerIDByTextBox(id.id);        
+        var Player = getPlayerIDByNameTextBox(id.id);        
         savePlayername(Player, p.value);  // Save the value in backend
     }
 
     function PlayerPointsChanged(id){        
-        var p = document.getElementById(id.id);        
-        // Get the Player of the current Text-Box
-        var Player = getPlayerPointsByTextBox(id.id);
-        /*
-        Todo: Store the value of players point along with the player id in a dictionary,
-        Highlight the most valuable player and set its light to on
-        */
+        var p = document.getElementById(id);        
+        // Get the Player's points of the current Text-Box
+        var Points = p.value;  //Get the points
+        var Plid = getPlayerIDByPointsTextBox(id); //Get the corresponding player ID
+        //alert(Plid + " => " + Points); //DEBUG        
+        updatePlayerpoints(Plid, Points);
     }
 
-    function getPlayerIDByTextBox(boxname)
-    { // Will get the Player's ID by a given Textbox        
+    function getPlayerIDByNameTextBox(boxname)
+    { // Will get the Player's ID by a given Name-Textbox        
         var myreturn = "Not found!";
-
         for (let i=0; i<player_uis.length; i++)
         {               
             if (boxname == player_uis[i].textbox_name)
@@ -219,12 +390,11 @@
         return myreturn;
     }
 
-    function getPlayerPointsByTextBox(boxname)
-    { // Will get the Player's points by a given Textbox        
+    function getPlayerIDByPointsTextBox(boxname)
+    { // Will get the Player's ID by a given Points-Textbox        
         var myreturn = "Not found!";
-
         for (let i=0; i<player_uis.length; i++)
-        {  
+        {               
             if (boxname == player_uis[i].textbox_points)
             {  
                 myreturn = player_uis[i].id;             
@@ -234,7 +404,6 @@
         // alert("! " + myreturn); //DEBUG
         return myreturn;
     }
-
 
     function makeGetRequest(encodedURI){
         //Will make a GET-Request to the backend

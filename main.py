@@ -1,4 +1,4 @@
-# Python 3 server example
+# Python 3 web server and light control
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
@@ -32,10 +32,10 @@ class proglogic():
             if (qs['job'] is None):
                 # print("Job-variable not set!")  # DEBUG
                 return  # Job is not set
-            if (qs['job'][0] == "setplayer"):
+            if (qs['job'][0] == "setplayer" and qs['name'][0] is not None and qs['id'][0] is not None):
                 # Set Playersname
                 self.setPlayerName(qs['name'][0], qs['id'][0])  # Set player's name in our dictionary
-            elif (qs['job'][0] == "enlightplayer"):
+            elif (qs['job'][0] == "enlightplayer" and qs['id'][0] is not None and qs['onoff'][0] is not None):
                 # we should enable or disable a player's light
                 enlighten = False  # should we enlighten the player. If false, the light should turn off
                 if qs['onoff'][0] == "light":
@@ -51,7 +51,7 @@ class proglogic():
         
         if currentstate is not None:
             # A previous player state exists
-            # print("Light-State-Transition: " + str(currentstate) + " => " + str(on))  # DEBUG
+            print("Light-State-Transition: " + str(currentstate) + " => " + str(on))  # DEBUG
             if currentstate != on:
                 # New state is different than the previous state. We should do something                      
                 if on:
