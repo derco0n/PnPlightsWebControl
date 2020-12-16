@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 from urllib.parse import parse_qs
 import time
 from events import Events
+import lib8relay  # Needed to control the relay-board (via pip3 install lib8relay or https://github.com/SequentMicrosystems/8relay-rpi/tree/master/python)
 
 hostName = "localhost"
 serverPort = 8080
