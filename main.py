@@ -6,7 +6,8 @@ import time
 from events import Events
 import lib8relay  # Needed to control the relay-board (via pip3 install lib8relay or https://github.com/SequentMicrosystems/8relay-rpi/tree/master/python)
 
-hostName = "localhost"
+# hostName = "localhost"  # localhost only
+hostName = ""  # Any IP
 serverPort = 8080
 
 # Begin: Classes
@@ -36,36 +37,51 @@ class proglogic():
             if (qs['job'][0] == "setplayer" and qs['name'][0] is not None and qs['id'][0] is not None):
                 # Set Playersname
                 self.setPlayerName(qs['name'][0], qs['id'][0])  # Set player's name in our dictionary
-            elif (qs['job'][0] == "enlightplayer" and qs['id'][0] is not None and qs['onoff'][0] is not None):
+            elif (qs['job'][0] == "enlightplayer" and qs['id'][0] is not None and qs['onoff'][0] is not None and qs['pnum'][0] is not None):
                 # we should enable or disable a player's light
                 enlighten = False  # should we enlighten the player. If false, the light should turn off
                 if qs['onoff'][0] == "light":
                     enlighten = True
-                self.tooglePlayersLight(enlighten, qs['id'][0])  # Need a way to access the other class's object
+                self.tooglePlayersLight(enlighten, qs['id'][0], int(qs['pnum'][0]))
         return
 
-    def tooglePlayersLight(self, on, id):
+    def tooglePlayersLight(self, on, id, pnum):
         """ This will toggle a players light (determined by id) On (if true) or off"""        
         currentstate = None
         if id in self.player_states.keys():
-            currentstate = self.player_states[id]        
+            # print("The old books told me stories about a hero called " + str(id))  # DEBUG
+            currentstate = self.player_states[id]
+        else:
+            # print("I didn't know about a hero called " + str(id) + " yet. I'll never forget...")
+            pass
         
         if currentstate is not None:
             # A previous player state exists
-            print("Light-State-Transition for player \"" + str(id) + "\": " + str(currentstate) + " => " + str(on))  # DEBUG
+            # print("Light-State-Transition for player \"" + str(id) + "\": " + str(currentstate) + " => " + str(on))  # DEBUG
             if currentstate != on:
                 # New state is different than the previous state. We should do something                      
-                # Todo: Add code to turn relay's on/off here below. We need to import the libraries for the relay-board
+                # as pnum's index is 1-based but the lib8relay-lib is zero-based we need to substract 1 from pnum
+                pnum-=1
+                # Turn relay's on/off here below. We need to import the libraries for the relay-board
                 if on:
-                    # print("Will enlight player " + str(id))  # DEBUG
-                    pass
+                    print("Will bath player " + str(id) + " in the divine light of the builder of the worlds")  # DEBUG
+                    try:
+                        lib8relay.set(0, pnum, 1)  # Turn relay for the player with the given index ON                    
+                    except:
+                        print("Error while setting light-state. Is the relay-board connected?")
                 else:
-                    # print("Will drop player " + str(id) + " in eternal darkness.")  # DEBUG
-                    time.sleep(0.1)  # Give the relay time to change it's state (only on one-way-transistion)
-                    pass
+                    print("Will drop player " + str(id) + " in eternal darkness.")  # DEBUG
+                    try:
+                        lib8relay.set(0, pnum, 0)  # Turn relay for the player with the given index OFF
+                    except:
+                        print("Error while setting light-state. Is the relay-board connected?")
+                time.sleep(0.1)  # Give the relay time to change it's state
             else:
-                # print("Previous state matches new state. Will not change anything.")  # DEBUG
+                # print("Previous state matches new state. Will not change anything.")  # DEBUG                
                 pass
+        else:
+            # print("Error: Player's state is not set!")  # DEBUG
+            pass
         self.player_states.update({id: on})  # Update the states-dictionary. Will add item if new, will update if it exists...
         return
 

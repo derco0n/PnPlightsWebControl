@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="height=device-height, initial-scale=0.8">
     <title>Pi 'n Paper-LightControl (by derco0n)</title>
     <style>
         body {
@@ -78,111 +79,116 @@
             border: 2px solid #ff0000;
             color: white;
         }
+
+	input {
+		width: 100%
+	}
     </style>
 </head>
 
 <body>
-<H1>Pi 'n Paper - Light Control v0.13 (by <a href="https://github.com/derco0n">derco0n</a>)</H1>
+<H1>Pi 'n Paper - Light Control v0.14 (by <a href="https://github.com/derco0n">derco0n</a>)</H1>
 
 <H2>Spieler:</H2>
 <div id="players">
     <div id="p1" class="block">
         <div id="p1_rank">
-            1: 
+        1:
         </div>
-        <div id="p1_name">            
-            <input type="text" placeholder="Spielername" width="150" name="name_p1" id="name_p1" 
-            onchange="PlayerNameChanged(name_p1)" onmouseenter="PlayerOnHover('p1')" onmouseleave="PlayerOnNoHover('p1')" />            
+        <div id="p1_name">
+            <input type="text" placeholder="Spielername" name="name_p1" id="name_p1"
+            onchange="PlayerNameChanged(name_p1)" onmouseenter="PlayerOnHover('p1')" onmouseleave="PlayerOnNoHover('p1')" />
         </div>
         <div id="p1_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p1" id="points_p1" onchange="PlayerPointsChanged('points_p1')"/>
+            <input type="number" min="0" placeholder="Punkte" name="points_p1" id="points_p1" onchange="PlayerPointsChanged('points_p1')"/>
         </div>
     </div>
     <div id="p2" class="block">
         <div id="p2_rank">
-            2: 
+        2:
         </div>
-        <div id="p2_name">            
-            <input type="text" placeholder="Spielername" width="150" name="name_p2" id="name_p2" 
-            onchange="PlayerNameChanged(name_p2)" onmouseenter="PlayerOnHover('p2')" onmouseleave="PlayerOnNoHover('p2')" />            
+        <div id="p2_name">
+            <input type="text" placeholder="Spielername" name="name_p2" id="name_p2"
+            onchange="PlayerNameChanged(name_p2)" onmouseenter="PlayerOnHover('p2')" onmouseleave="PlayerOnNoHover('p2')" />
         </div>
         <div id="p2_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p2" id="points_p2" onchange="PlayerPointsChanged('points_p2')"/>
+            <input type="number" min="0" placeholder="Punkte" name="points_p2" id="points_p2" onchange="PlayerPointsChanged('points_p2')"/>
         </div>
     </div>
     <div id="p3" class="block">
         <div id="p3_rank">
-            3: 
+        3:
         </div>
-        <div id="p3_name">            
-            <input type="text" placeholder="Spielername" width="150" name="name_p3" id="name_p3" 
-            onchange="PlayerNameChanged(name_p3)" onmouseenter="PlayerOnHover('p3')" onmouseleave="PlayerOnNoHover('p3')" />            
+        <div id="p3_name">
+            <input type="text" placeholder="Spielername" name="name_p3" id="name_p3"
+            onchange="PlayerNameChanged(name_p3)" onmouseenter="PlayerOnHover('p3')" onmouseleave="PlayerOnNoHover('p3')" />
         </div>
         <div id="p3_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p3" id="points_p3" onchange="PlayerPointsChanged('points_p3')"/>
+            <input type="number" min="0" placeholder="Punkte" name="points_p3" id="points_p3" onchange="PlayerPointsChanged('points_p3')"/>
         </div>
     </div>
     <div id="p4" class="block">
         <div id="p4_rank">
-            4: 
+        4:
         </div>
-        <div id="p4_name">            
-            <input type="text" placeholder="Spielername" width="150" name="name_p4" id="name_p4" 
-            onchange="PlayerNameChanged(name_p4)" onmouseenter="PlayerOnHover('p4')" onmouseleave="PlayerOnNoHover('p4')" />            
+        <div id="p4_name">
+            <input type="text" placeholder="Spielername" name="name_p4" id="name_p4"
+            onchange="PlayerNameChanged(name_p4)" onmouseenter="PlayerOnHover('p4')" onmouseleave="PlayerOnNoHover('p4')" />
         </div>
         <div id="p4_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p4" id="points_p4" onchange="PlayerPointsChanged('points_p4')"/>
+            <input type="number" min="0" placeholder="Punkte" name="points_p4" id="points_p4" onchange="PlayerPointsChanged('points_p4')"/>
         </div>
     </div>
     <div id="p5" class="block">
         <div id="p5_rank">
-            5: 
+        5:
         </div>
-        <div id="p5_name">            
-            <input type="text" placeholder="Spielername" width="150" name="name_p5" id="name_p5" 
-            onchange="PlayerNameChanged(name_p5)" onmouseenter="PlayerOnHover('p5')" onmouseleave="PlayerOnNoHover('p5')" />            
+        <div id="p5_name">
+            <input type="text" placeholder="Spielername" name="name_p5" id="name_p5"
+            onchange="PlayerNameChanged(name_p5)" onmouseenter="PlayerOnHover('p5')" onmouseleave="PlayerOnNoHover('p5')" />
         </div>
         <div id="p5_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p5" id="points_p5" onchange="PlayerPointsChanged('points_p5')"/>
+            <input type="number" min="0" placeholder="Punkte" name="points_p5" id="points_p5" onchange="PlayerPointsChanged('points_p5')"/>
         </div>
     </div>
     <div id="p6" class="block">
         <div id="p6_rank">
-            6: 
+        6:
         </div>
-        <div id="p6_name">            
-            <input type="text" placeholder="Spielername" width="150" name="name_p6" id="name_p6" 
-            onchange="PlayerNameChanged(name_p6)" onmouseenter="PlayerOnHover('p6')" onmouseleave="PlayerOnNoHover('p6')" />            
+        <div id="p6_name">
+            <input type="text" placeholder="Spielername" name="name_p6" id="name_p6"
+            onchange="PlayerNameChanged(name_p6)" onmouseenter="PlayerOnHover('p6')" onmouseleave="PlayerOnNoHover('p6')" />
         </div>
         <div id="p6_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p6" id="points_p6" onchange="PlayerPointsChanged('points_p6')"/>
+            <input type="number" min="0" placeholder="Punkte" name="points_p6" id="points_p6" onchange="PlayerPointsChanged('points_p6')"/>
         </div>
     </div>
     <div id="p7" class="block">
         <div id="p7_rank">
-            7: 
+        7:
         </div>
-        <div id="p7_name">            
-            <input type="text" placeholder="Spielername" width="150" name="name_p7" id="name_p7" 
-            onchange="PlayerNameChanged(name_p7)" onmouseenter="PlayerOnHover('p7')" onmouseleave="PlayerOnNoHover('p7')" />            
+        <div id="p7_name">
+            <input type="text" placeholder="Spielername" name="name_p7" id="name_p7"
+            onchange="PlayerNameChanged(name_p7)" onmouseenter="PlayerOnHover('p7')" onmouseleave="PlayerOnNoHover('p7')" />
         </div>
         <div id="p7_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p7" id="points_p7" onchange="PlayerPointsChanged('points_p7')"/>
+            <input type="number" min="0" placeholder="Punkte" name="points_p7" id="points_p7" onchange="PlayerPointsChanged('points_p7')"/>
         </div>
     </div>
     <div id="p8" class="block">
         <div id="p8_rank">
-            8: 
+        8:
         </div>
-        <div id="p8_name">            
-            <input type="text" placeholder="Spielername" width="150" name="name_p8" id="name_p8" 
-            onchange="PlayerNameChanged(name_p8)" onmouseenter="PlayerOnHover('p8')" onmouseleave="PlayerOnNoHover('p8')" />            
+        <div id="p8_name">
+            <input type="text" placeholder="Spielername" name="name_p8" id="name_p8"
+            onchange="PlayerNameChanged(name_p8)" onmouseenter="PlayerOnHover('p8')" onmouseleave="PlayerOnNoHover('p8')" />
         </div>
         <div id="p8_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p8" id="points_p8" onchange="PlayerPointsChanged('points_p8')"/>
+            <input type="number" min="0" placeholder="Punkte" name="points_p8" id="points_p8" onchange="PlayerPointsChanged('points_p8')"/>
         </div>
     </div>
 </div>
+
 <p>
     <div id="controls">
         <div id="buttons" class="block">
@@ -339,7 +345,7 @@
                 setCurrentPlayer(0); //Set the current playernumber to the first player (the one with the most points)
 
                 id=getPlayerIDByPnum(current_playernumber)
-                enlightenPlayer(id); //Turn on players light
+                enlightenPlayer(id, current_playernumber); //Turn on players light
                 //Start a new round as we're actually not within one
                 switchmode(true);
 
@@ -354,12 +360,12 @@
             //Go back to the previous Player... (just in case the dungeonmaster accidentially clicked next, as he skilled "gross motor skills" to maximum )
             pid=getPlayerIDByPnum(current_playernumber);            
             if (current_playerindex > 0){
-                darkenPlayer(pid);  //Darken the current player
+                darkenPlayer(pid, current_playernumber);  //Darken the current player
 
                 //Fetch the new player
                 setCurrentPlayer(current_playerindex-1);                
                 pid=getPlayerIDByPnum(current_playernumber);
-                enlightenPlayer(pid); //Enlighten it                               
+                enlightenPlayer(pid, current_playernumber); //Enlighten it                               
             }
             else {
                 alert("Erster Spieler! : " + pid); //DEBUG
@@ -388,12 +394,12 @@
             pid=getPlayerIDByPnum(current_playernumber);
             //alert(current_playernumber + " => " + pid); //DEBUG
             if (current_playerindex < player_points.length-1) {
-                darkenPlayer(pid);  //Darken the current player
+                darkenPlayer(pid, current_playernumber);  //Darken the current player
 
                 //Fetch the new player
                 setCurrentPlayer(current_playerindex+1);
                 pid=getPlayerIDByPnum(current_playernumber);
-                enlightenPlayer(pid); //Enlighten it
+                enlightenPlayer(pid, current_playernumber); //Enlighten it
             }
             else {
                 alert("Letzter Spieler! : " + pid); //DEBUG
@@ -544,9 +550,9 @@
         makeGetRequest(uri);        
     }
 
-    function enlightenPlayer(id){
+    function enlightenPlayer(id, p_num){
         //Will tell the backend to turn on player's-light and also highlight the player in UI
-        var uri = encodeURI("http://127.0.0.1:8080/engine?job=enlightplayer&id="+id+"&onoff=light");  //Todo: Need to figure out why this does ten requests at once...
+        var uri = encodeURI("http://127.0.0.1:8080/engine?job=enlightplayer&id="+id+"&pnum="+p_num+"&onoff=light");  //Todo: Need to figure out why this does ten requests at once...
         //alert(uri);
         makeGetRequest(uri);
 
@@ -558,9 +564,9 @@
         pointsbox.style.background="green";        
     }
 
-    function darkenPlayer(id){
+    function darkenPlayer(id, p_num){
         //Will tell the backend to turn on player's-light and also highlight the player in UI
-        var uri = encodeURI("http://127.0.0.1:8080/engine?job=enlightplayer&id="+id+"&onoff=darkness");  //Todo: Need to figure out why this does ten requests at once...
+        var uri = encodeURI("http://127.0.0.1:8080/engine?job=enlightplayer&id="+id+"&pnum="+p_num+"&onoff=darkness");  //Todo: Need to figure out why this does ten requests at once...
         makeGetRequest(uri);
 
         //Darken the player in UI
@@ -577,7 +583,7 @@
             for (let i=0; i<player_uis.length; i++)  //iterate through all players
                 { 
                     // alert(player_uis[i].id); //DEBUG
-                    darkenPlayer(player_uis[i].id);  //Darken the current player                    
+                    darkenPlayer(player_uis[i].id, player_points[i].pnum);  //Darken the current player                    
                 }
         }
         catch (e){

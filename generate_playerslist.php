@@ -10,14 +10,14 @@ for ($i=1; $i<$num_players+1; $i++){
     echo('
     <div id="p' . $i . '" class="block">
         <div id="p' . $i . '_rank">
-            ' . $i . ': 
+        ' . $i . ':
         </div>
-        <div id="p' . $i . '_name">            
-            <input type="text" placeholder="Spielername" width="150" name="name_p' . $i . '" id="name_p' . $i . '" 
-            onchange="PlayerNameChanged(name_p' . $i . ')" onmouseenter="PlayerOnHover(\'p' . $i . '\')" onmouseleave="PlayerOnNoHover(\'p' . $i . '\')" />            
+        <div id="p' . $i . '_name">
+            <input type="text" placeholder="Spielername" name="name_p' . $i . '" id="name_p' . $i . '"
+            onchange="PlayerNameChanged(name_p' . $i . ')" onmouseenter="PlayerOnHover(\'p' . $i . '\')" onmouseleave="PlayerOnNoHover(\'p' . $i . '\')" />
         </div>
         <div id="p' . $i . '_points">
-            <input type="number" min="0" placeholder="Punkte" width="30" name="points_p' . $i . '" id="points_p' . $i . '" onchange="PlayerPointsChanged(points_p' . $i . ')"/>
+            <input type="number" min="0" placeholder="Punkte" name="points_p' . $i . '" id="points_p' . $i . '" onchange="PlayerPointsChanged(\'points_p' . $i . '\')"/>
         </div>
     </div>'
     );
