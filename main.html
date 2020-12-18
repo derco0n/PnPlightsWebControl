@@ -410,7 +410,7 @@
                 enlightenPlayer(pid, current_playernumber); //Enlighten it
             }
             else {
-                alert("Letzter Spieler! : " + pid); //DEBUG
+                //alert("Letzter Spieler! : " + pid); //DEBUG
             }
 
             if (current_playerindex > 0) {                
@@ -541,7 +541,7 @@
     function makeGetRequest(encodedURI){
         //Will make a GET-Request to the backend. As fetch() is poorly supported, espacially on mobile browsers, we won't use it!
         //As we want a more flexible-solution we might use the jquery-library here
-        alert(encodedURI); //DEBUG
+        //alert(encodedURI); //DEBUG
         $.get( encodedURI, function( data ) {
             $( ".result" ).html( data );
             alert( "Load was performed." );
