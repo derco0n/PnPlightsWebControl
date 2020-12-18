@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="height=device-height, initial-scale=0.8">
     <title>Pi 'n Paper-LightControl (by derco0n)</title>
+    <script src="./jquery.min.js"></script>
     <style>
         body {
             background: black;
@@ -87,7 +88,7 @@
 </head>
 
 <body>
-<H1>Pi 'n Paper - Light Control v0.14 (by <a href="https://github.com/derco0n">derco0n</a>)</H1>
+<H1>Pi 'n Paper - Light Control v0.15 (by <a href="https://github.com/derco0n">derco0n</a>)</H1>
 
 <H2>Spieler:</H2>
 <div id="players">
@@ -198,7 +199,7 @@
             <div id="btns_inround">
                 <button type="button" class="button1" id="btn_prevplayer" onclick="Handle_btn_click('btn_prevplayer')">Vorh. Spieler</button>
                 <button type="button" class="button1" id="btn_noplayer" onclick="Handle_btn_click('btn_noplayer')">Kein Spieler</button>
-                <button type="button" class="button1" id="btn_nextplayer" onclick="Handle_btn_click('btn_nextplayer')">N&auml;chs. Spieler</button>
+                <button type="button" class="button1" id="btn_nextplayer" ontouch="" onclick="Handle_btn_click('btn_nextplayer')">N&auml;chs. Spieler</button>
             </div>
         </div>
     </div>
@@ -237,7 +238,14 @@
     
     var textbox_org_background=document.getElementById("name_p1").style.background;  //Save the original color of the Textboxes
     var button_org_background=document.getElementById("btn_prevplayer").style.background;  //Save the original color of the Buttons
-    
+
+    //Add additional onTouch-Handlers as the buttons might not be clicked but touched on mobile devices...
+    /*
+    document.getElementById("btn_startstop").ontouchend=Handle_btn_click('btn_startstop');
+    document.getElementById("btn_prevplayer").ontouchend=Handle_btn_click('btn_prevplayer');
+    document.getElementById("btn_noplayer").ontouchend=Handle_btn_click('btn_noplayer');
+    document.getElementById("btn_nextplayer").ontouchend=Handle_btn_click('btn_nextplayer');
+    */
 
     // Start: Functions
     function setCurrentPlayer(num){
@@ -347,13 +355,13 @@
                 id=getPlayerIDByPnum(current_playernumber)
                 enlightenPlayer(id, current_playernumber); //Turn on players light
                 //Start a new round as we're actually not within one
-                switchmode(true);
+                switchmode(true);                
 
             }
             else {
                 //Stop the current round
                 switchmode(false);
-                ThrowAllPlayerInEternalDarkness(); //Turn all players dark
+                ThrowAllPlayerInEternalDarkness(); //Turn all players dark                
             }
         }
         else if (id=="btn_prevplayer"){
@@ -368,7 +376,7 @@
                 enlightenPlayer(pid, current_playernumber); //Enlighten it                               
             }
             else {
-                alert("Erster Spieler! : " + pid); //DEBUG
+                //alert("Erster Spieler! : " + pid); //DEBUG
             }
 
             //Some-Button-Magic
@@ -531,33 +539,42 @@
     }
 
     function makeGetRequest(encodedURI){
-        //Will make a GET-Request to the backend
-        fetch(encodedURI)
-        .then(response => {
-            if (!response.ok) {
-            throw new Error('Fehler bei der Kommunikation mit dem Backend!'); //This should not happen
-            }
-        });
+        //Will make a GET-Request to the backend. As fetch() is poorly supported, espacially on mobile browsers, we won't use it!
+        //As we want a more flexible-solution we might use the jquery-library here
+        alert(encodedURI); //DEBUG
+        $.get( encodedURI, function( data ) {
+            $( ".result" ).html( data );
+            alert( "Load was performed." );
+        });    
     }
 
     function highlightPlayername(x) {
         x.style.background="red";
     }
 
+    function getHostsIP(){
+        // As Javascript will client-side the client might need to determine server's IP to make new requests
+        // This method will return IP and Port which then can be used to craft a URL to make requests
+        var ip = location.host;
+        //alert(ip); // DEBUG
+        return ip;
+    }
+
     function savePlayername(id, name){
         //Will set the playername on backend-side
-        var uri = encodeURI("http://127.0.0.1:8080/engine?job=setplayer&id="+id+"&name="+name);  //Todo: Need to figure out why this does ten requests at once...
+        var uri = encodeURI("http://"+getHostsIP()+"/engine?job=setplayer&id="+id+"&name="+name);  //Todo: Need to figure out why this does ten requests at once...
         makeGetRequest(uri);        
     }
 
     function enlightenPlayer(id, p_num){
-        //Will tell the backend to turn on player's-light and also highlight the player in UI
-        var uri = encodeURI("http://127.0.0.1:8080/engine?job=enlightplayer&id="+id+"&pnum="+p_num+"&onoff=light");  //Todo: Need to figure out why this does ten requests at once...
-        //alert(uri);
+        //Will tell the backend to turn on player's-light and also highlight the player in UI        
+        var uri = encodeURI("http://"+getHostsIP()+"/engine?job=enlightplayer&id="+id+"&pnum="+p_num+"&onoff=light");  //Todo: Need to figure out why this does ten requests at once...
+        //alert(uri); //DEBUG
         makeGetRequest(uri);
 
         
         //Highlight the player in UI
+        //alert(id + " => Light"); //DEBUG
         namebox=document.getElementById(getPlayerNameTextBoxByID(id));
         pointsbox=document.getElementById(getPlayerPointsTextBoxByID(id));
         namebox.style.background="green";
@@ -566,15 +583,16 @@
 
     function darkenPlayer(id, p_num){
         //Will tell the backend to turn on player's-light and also highlight the player in UI
-        var uri = encodeURI("http://127.0.0.1:8080/engine?job=enlightplayer&id="+id+"&pnum="+p_num+"&onoff=darkness");  //Todo: Need to figure out why this does ten requests at once...
+        var uri = encodeURI("http://"+getHostsIP()+"/engine?job=enlightplayer&id="+id+"&pnum="+p_num+"&onoff=darkness");  //Todo: Need to figure out why this does ten requests at once...
+        //alert(uri); //DEBUG
         makeGetRequest(uri);
 
         //Darken the player in UI
-        //alert(id); //DEBUG
+        //alert(id + " => Darkness"); //DEBUG
         namebox= document.getElementById(getPlayerNameTextBoxByID(id));
         pointsbox= document.getElementById(getPlayerPointsTextBoxByID(id));                
         namebox.style.background=textbox_org_background;
-        pointsbox.style.background=textbox_org_background;        
+        pointsbox.style.background=textbox_org_background;  
     }
 
     function ThrowAllPlayerInEternalDarkness(){
@@ -583,7 +601,7 @@
             for (let i=0; i<player_uis.length; i++)  //iterate through all players
                 { 
                     // alert(player_uis[i].id); //DEBUG
-                    darkenPlayer(player_uis[i].id, player_points[i].pnum);  //Darken the current player                    
+                    darkenPlayer(player_uis[i].id, player_points[i].pnum);  //Darken the current player                                      
                 }
         }
         catch (e){

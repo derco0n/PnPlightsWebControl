@@ -113,8 +113,16 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             content = self.getTextFromFile("./main.html")  # Serve the main-web-page which includes javascript-logic
             self.wfile.write(bytes(content, "utf-8"))
             return
-        elif self.path.startswith("/engine"): # engine-call (used internally)  
+        elif self.path == "/jquery.min.js":  # jquery-libray - serve it
             # Request OK
+            self.send_response(200)
+            self.send_header("Content-type", "text/javascript")
+            self.end_headers()
+            content = self.getTextFromFile("./jquery.min.js")  # Serve the main-web-page which includes javascript-logic
+            self.wfile.write(bytes(content, "utf-8"))
+            return
+        elif self.path.startswith("/engine"): # engine-call (used internally)  
+            # Request OK            
             self.send_response(200)
             self.events.on_enginerequest(self.path)            
             return
