@@ -22,7 +22,11 @@ class proglogic():
     def __init__(self):
         self.count_debug=0
         self.re = relayeight()
-        self.re.set_all(0, 0)  # Turn off all players
+        try:
+            self.re.set_all(0, 0)  # Turn off all players
+        except Exception as e:
+            print("Error while setting players initial light-state. => " + str(e)+ "... is the relay-board connected and i2c enabled?")
+
 
     def Handle_external_EngineCall(self, request):
         """Will handle EngineCall-Events from MyRequestHandler"""
@@ -53,7 +57,18 @@ class proglogic():
     def AllPlayersDark(self):
             """This will turn off all Player-LED's at once"""
             print("Applying black magic on all players...")  # DEBUG
-            self.re.set_all(0, 0)
+            try:
+                self.re.set_all(0, 0)                                  
+            except Exception as e:
+                print("Critical Error: Unable to darken all players. => " + str(e))
+            finally:
+                # Save all playerstates (we've got 8 players [p1-p8] as the we've got 8 relays) as dark...
+                counter=1
+                while counter < 9:
+                    id="p"+str(counter)   # Craft a playerID based on the current counter
+                    print("Saving dark state for: "+id)  # DEBUG
+                    self.player_states.update({id: False})  # Update the states-dictionary. Will add item if new, will update if it exists... 
+                    counter+=1
     
     def togglePlayersLight(self, on, id, pnum):
         """ This will toggle a players light (determined by id) On (if true) or off"""        

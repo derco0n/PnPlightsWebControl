@@ -85,9 +85,11 @@ class relayeight():
             raise ValueError('Invalid relay value!')
         if value < 0:
             raise ValueError('Invalid relay value!')
-            
-        bus = smbus2.SMBus(1)		
-        hwAdd =  self.DEVICE_ADDRESS + stack
+        try:    
+            bus = smbus2.SMBus(1)		
+            hwAdd =  self.DEVICE_ADDRESS + stack
+        except Exception as e:
+            raise ValueError('SMBus-Device could not be opened! => ' + str(e))            
         try:	
             oldVal = self.__check(bus, hwAdd)
         except Exception as e:
