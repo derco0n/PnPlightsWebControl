@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 from urllib.parse import parse_qs
 import time
 from events import Events
-import lib8relay  # Needed to control the relay-board (via pip3 install lib8relay or https://github.com/SequentMicrosystems/8relay-rpi/tree/master/python)
+from relayeight import relayeight 
 
 # hostName = "localhost"  # localhost only
 hostName = ""  # Any IP
@@ -21,6 +21,8 @@ class proglogic():
     
     def __init__(self):
         self.count_debug=0
+        self.re = relayeight()
+        self.re.set_all(0, 0)  # Turn off all players
 
     def Handle_external_EngineCall(self, request):
         """Will handle EngineCall-Events from MyRequestHandler"""
@@ -32,7 +34,7 @@ class proglogic():
             # print("Path: " + path)  # Debug
             # print("qs: " + str(qs))  # Debug
             if (qs['job'] is None):
-                # print("Job-variable not set!")  # DEBUG
+                print("Job-variable not set!")  # DEBUG
                 return  # Job is not set
             if (qs['job'][0] == "setplayer" and qs['name'][0] is not None and qs['id'][0] is not None):
                 # Set Playersname
@@ -42,10 +44,18 @@ class proglogic():
                 enlighten = False  # should we enlighten the player. If false, the light should turn off
                 if qs['onoff'][0] == "light":
                     enlighten = True
-                self.tooglePlayersLight(enlighten, qs['id'][0], int(qs['pnum'][0]))
+                self.togglePlayersLight(enlighten, qs['id'][0], int(qs['pnum'][0]))
+            elif (qs['job'][0] == "alldark"):
+                # we should disable all player's lights                
+                self.AllPlayersDark()
         return
 
-    def tooglePlayersLight(self, on, id, pnum):
+    def AllPlayersDark(self):
+            """This will turn off all Player-LED's at once"""
+            print("Applying black magic on all players...")  # DEBUG
+            self.re.set_all(0, 0)
+    
+    def togglePlayersLight(self, on, id, pnum):
         """ This will toggle a players light (determined by id) On (if true) or off"""        
         currentstate = None
         if id in self.player_states.keys():
@@ -53,28 +63,25 @@ class proglogic():
             currentstate = self.player_states[id]
         else:
             # print("I didn't know about a hero called " + str(id) + " yet. I'll never forget...")
-            pass
-        
+            pass        
         if currentstate is not None:
             # A previous player state exists
-            # print("Light-State-Transition for player \"" + str(id) + "\": " + str(currentstate) + " => " + str(on))  # DEBUG
+            print("Light-State-Transition for player \"" + str(id) + "\": " + str(currentstate) + " => " + str(on))  # DEBUG
             if currentstate != on:
-                # New state is different than the previous state. We should do something                      
-                # as pnum's index is 1-based but the lib8relay-lib is zero-based we need to substract 1 from pnum
-                pnum-=1
-                # Turn relay's on/off here below. We need to import the libraries for the relay-board
+                # New state is different than the previous state. We should do something                     
+                # Turn relay's on/off here below. 
                 if on:
                     print("Will bath player " + str(id) + " in the divine light of the builder of the worlds")  # DEBUG
                     try:
-                        lib8relay.set(0, pnum, 1)  # Turn relay for the player with the given index ON                    
-                    except:
-                        print("Error while setting light-state. Is the relay-board connected?")
+                        self.re.set_one(0, pnum, 1)  # Turn relay for the player with the given index ON                    
+                    except Exception as e: 
+                        print("Error: " + str(e) + " while setting light-state. Is the relay-board connected?")
                 else:
                     print("Will drop player " + str(id) + " in eternal darkness.")  # DEBUG
                     try:
-                        lib8relay.set(0, pnum, 0)  # Turn relay for the player with the given index OFF
-                    except:
-                        print("Error while setting light-state. Is the relay-board connected?")
+                        self.re.set_one(0, pnum, 0)  # Turn relay for the player with the given index OFF
+                    except Exception as e:
+                        print("Error "+str(e)+" while setting light-state. Is the relay-board connected?")
                 time.sleep(0.1)  # Give the relay time to change it's state
             else:
                 # print("Previous state matches new state. Will not change anything.")  # DEBUG                

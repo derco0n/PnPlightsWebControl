@@ -251,7 +251,9 @@
     function setCurrentPlayer(num){
         // Set the current player... the one who's turn is now
         current_playerindex=num; //Save the current playerindex
-        current_playernumber=player_points[current_playerindex].pnum;  //Save the current playernumber
+        if (num >= 0 && num < player_points.length){
+            current_playernumber=player_points[current_playerindex].pnum;  //Save the current playernumber
+        }
     }
 
     function switchmode(inround){
@@ -279,6 +281,8 @@
 
         if (inround){
             document.getElementById("btn_startstop").innerHTML="Rundenstopp";
+            document.getElementById("btn_nextplayer").innerHTML="Erster Spieler";
+            document.getElementById("btn_prevplayer").hidden=true;
         }        
         else {
             document.getElementById("btn_startstop").innerHTML="Rundenstart";
@@ -350,10 +354,10 @@
                 //Calculate players ranks based on their points and write them back to player_points
                 player_points = calcPlayerRanks();
                 
-                setCurrentPlayer(0); //Set the current playernumber to the first player (the one with the most points)
+                setCurrentPlayer(-1); //Set the current playernumber a non existing player
 
-                id=getPlayerIDByPnum(current_playernumber)
-                enlightenPlayer(id, current_playernumber); //Turn on players light
+                //id=getPlayerIDByPnum(current_playernumber);
+                //enlightenPlayer(id, current_playernumber); //Turn on players light
                 //Start a new round as we're actually not within one
                 switchmode(true);                
 
@@ -366,19 +370,21 @@
         }
         else if (id=="btn_prevplayer"){
             //Go back to the previous Player... (just in case the dungeonmaster accidentially clicked next, as he skilled "gross motor skills" to maximum )
-            pid=getPlayerIDByPnum(current_playernumber);            
+            pid=getPlayerIDByPnum(current_playernumber);
+            //darkenPlayer(pid, current_playernumber, false);  //Darken the current player
+            ThrowAllPlayerInEternalDarkness();
             if (current_playerindex > 0){
-                darkenPlayer(pid, current_playernumber);  //Darken the current player
-
-                //Fetch the new player
-                setCurrentPlayer(current_playerindex-1);                
-                pid=getPlayerIDByPnum(current_playernumber);
-                enlightenPlayer(pid, current_playernumber); //Enlighten it                               
+                //Fetch the new player by decrementing our index
+                setCurrentPlayer(current_playerindex-1);   
             }
             else {
                 //alert("Erster Spieler! : " + pid); //DEBUG
+                setCurrentPlayer(player_points.length-1); //Rollover to the last player as we just got below the first player
             }
+            pid=getPlayerIDByPnum(current_playernumber);
+            enlightenPlayer(pid, current_playernumber); //Enlighten it 
 
+            /*
             //Some-Button-Magic
             if (current_playerindex==0) { 
                 //We're now at the first index and should disable the button                
@@ -390,6 +396,7 @@
                 document.getElementById("btn_nextplayer").disabled=false; //Enable the next-button
                 document.getElementById("btn_nextplayer").style.background=button_org_background;
             }
+            */
 
         }
         else if (id=="btn_noplayer"){
@@ -398,21 +405,26 @@
 
         }
         else if (id=="btn_nextplayer"){
-            //Iterate to the next Player...            
+            document.getElementById("btn_prevplayer").hidden=false;
+            document.getElementById("btn_nextplayer").innerHTML="Nächst. Spieler";
+            //Iterate to the next Player...      
             pid=getPlayerIDByPnum(current_playernumber);
             //alert(current_playernumber + " => " + pid); //DEBUG
+            //darkenPlayer(pid, current_playernumber, false);  //Darken the current player
+            ThrowAllPlayerInEternalDarkness();
             if (current_playerindex < player_points.length-1) {
-                darkenPlayer(pid, current_playernumber);  //Darken the current player
-
-                //Fetch the new player
-                setCurrentPlayer(current_playerindex+1);
-                pid=getPlayerIDByPnum(current_playernumber);
-                enlightenPlayer(pid, current_playernumber); //Enlighten it
+                //Fetch the new player by incrementing it
+                setCurrentPlayer(current_playerindex+1);                
             }
             else {
                 //alert("Letzter Spieler! : " + pid); //DEBUG
+                //Fetch the new player
+                setCurrentPlayer(0); //Rollover as we just exceeded the last player
             }
+            pid=getPlayerIDByPnum(current_playernumber);
+            enlightenPlayer(pid, current_playernumber); //Enlighten it
 
+            /*
             if (current_playerindex > 0) {                
                 document.getElementById("btn_prevplayer").disabled=false; //Enable the prev-button
                 document.getElementById("btn_prevplayer").style.background=button_org_background;
@@ -422,6 +434,7 @@
                 document.getElementById("btn_nextplayer").disabled=true; //Disable the next-button
                 document.getElementById("btn_nextplayer").style.background="grey";
             }
+            */
 
         }
     }
@@ -581,11 +594,15 @@
         pointsbox.style.background="green";        
     }
 
-    function darkenPlayer(id, p_num){
+    function darkenPlayer(id, p_num, ui_only){
         //Will tell the backend to turn on player's-light and also highlight the player in UI
-        var uri = encodeURI("http://"+getHostsIP()+"/engine?job=enlightplayer&id="+id+"&pnum="+p_num+"&onoff=darkness");  //Todo: Need to figure out why this does ten requests at once...
-        //alert(uri); //DEBUG
-        makeGetRequest(uri);
+        
+        if (!ui_only) {
+            //not only the ui should be turned off. Normal case, when just one player should be darkened        
+            var uri = encodeURI("http://"+getHostsIP()+"/engine?job=enlightplayer&id="+id+"&pnum="+p_num+"&onoff=darkness");  //Todo: Need to figure out why this does ten requests at once...
+            //alert(uri); //DEBUG
+            makeGetRequest(uri);
+        }
 
         //Darken the player in UI
         //alert(id + " => Darkness"); //DEBUG
@@ -601,8 +618,13 @@
             for (let i=0; i<player_uis.length; i++)  //iterate through all players
                 { 
                     // alert(player_uis[i].id); //DEBUG
-                    darkenPlayer(player_uis[i].id, player_points[i].pnum);  //Darken the current player                                      
+                    darkenPlayer(player_uis[i].id, player_points[i].pnum, true);  //Darken the current player                                      
                 }
+            
+            // Make a GET-Request to darken all players at once
+            var uri = encodeURI("http://"+getHostsIP()+"/engine?job=alldark");  //Todo: Need to figure out why this does ten requests at once...
+            //alert(uri); //DEBUG
+            makeGetRequest(uri);
         }
         catch (e){
             alert(e);
